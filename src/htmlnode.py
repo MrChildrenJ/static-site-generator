@@ -24,4 +24,21 @@ class HTMLNode:
         res.append(f"props = {self.props}")
         return "\n".join(res)
     
+class LeafNode(HTMLNode):
+    def __init__(self, tag, value, props=None):
+        super().__init__(tag, value, None, props)   # Leaf must has no children
+
+    def to_html(self):
+        if self.value is None:
+            raise ValueError("LeafNode must have a value")
+        if self.tag is None:
+            return self.value
+        # ex: <a href="https://www.google.com">Click me!</a>
+        return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
     
+    def __repr__(self):
+        res = []
+        res.append(f"tag = {self.tag}")
+        res.append(f"value = {self.value}")
+        res.append(f"props = {self.props}")
+        return "\n".join(res)
